@@ -6,9 +6,11 @@
     <members>
         <member name="T:IntroductionOOP.Vector2D">
             <summary>Двумерный вектор</summary>
+            <remarks>16 байт</remarks>
         </member>
         <member name="F:IntroductionOOP.Vector2D._X">
             <summary>Значение координаты X</summary>
+            <remarks>8 байт</remarks>
         </member>
         <member name="F:IntroductionOOP.Vector2D._Y">
             <summary>Значение координаты Y</summary>
