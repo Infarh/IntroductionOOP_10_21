@@ -71,7 +71,7 @@ namespace IntroductionOOP
         //    private set;
         //}
 
-        //public double Length => Math.Sqrt(Math.Pow(_X) + Math.Pow(_Y, 2));
+        //public double Length => Math.Sqrt(Math.Pow(_X, 2) + Math.Pow(_Y, 2));
 
         /// <summary>Длина вектора</summary>
         public double Length => Math.Sqrt(_X * _X + _Y * _Y);
