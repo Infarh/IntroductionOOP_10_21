@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IntroductionOOP</name>
+    </assembly>
+    <members>
+        <member name="T:IntroductionOOP.Vector2D">
+            <summary>Двумерный вектор</summary>
+        </member>
+        <member name="F:IntroductionOOP.Vector2D._X">
+            <summary>Значение координаты X</summary>
+        </member>
+        <member name="F:IntroductionOOP.Vector2D._Y">
+            <summary>Значение координаты Y</summary>
+        </member>
+        <member name="P:IntroductionOOP.Vector2D.Length">
+            <summary>Длина вектора</summary>
+        </member>
+        <member name="P:IntroductionOOP.Vector2D.Angle">
+            <summary>Угол вектора от оси OX</summary>
+        </member>
+    </members>
+</doc>
