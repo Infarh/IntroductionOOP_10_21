@@ -4,6 +4,10 @@
         <name>IntroductionOOP</name>
     </assembly>
     <members>
+        <member name="M:IntroductionOOP.Car.Move(System.Double)">
+            <summary>Метод перемещения машины в пространстве</summary>
+            <param name="dt">Интервал времени, который машина двигалась с равным ускорением</param>
+        </member>
         <member name="T:IntroductionOOP.Vector2D">
             <summary>Двумерный вектор</summary>
             <remarks>16 байт</remarks>

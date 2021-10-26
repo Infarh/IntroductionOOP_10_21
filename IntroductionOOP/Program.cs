@@ -1,5 +1,8 @@
-﻿using System;
+﻿#nullable enable
+using System;
+using System.Collections;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace IntroductionOOP
@@ -8,33 +11,173 @@ namespace IntroductionOOP
     {
         static void Main(string[] args)
         {
-            Vector2D r1 = new();
-            //r1.X = 5;
-            //var r2 = r1;
-            Console.WriteLine(r1.X);
+            string? name = "Ivanov;";
 
-            //var car = new Car();
-            //car.Location = car.Location.Add(new(5, 0));
-            //location.X += 10;
+            name = null!;
 
-            var car = new Car("Lada")
+            //Console.WriteLine(name);
+
+            //name = null;
+
+            //if (name!.Length == 0)
+            //{
+
+            //}
+
+            //var car_name = "123";
+            //var location = new Vector2D();
+            //Console.WriteLine("Готов к старту");
+            //Console.ReadLine();
+
+            //for (var i = 0; i < 1000_000_000; i++)
+            //{
+            //    //var vector = new Vector2D();
+            //    var car = new Car(car_name, location);
+
+            //}
+
+            //GC.Collect();
+
+            var v1 = new Vector2D(5, 7);
+            var v2 = new Vector2D(4, 6);
+            var v3 = new Vector2D(5, 7);
+
+            Print(v1);
+            Print2(ref v1);
+            CreateVector(out v1);
+
+            //if (Equals(v1, v2))
+            //{
+
+            //}
+
+            Vector2D? null_v1 = v1;
+            Nullable<Vector2D> null_v2 = v2;
+
+            if (v1.Equals(v2))
             {
-                Speed = new(5,7),
-                Acceleration = new(0.5, 0.7)
+
+            }
+
+            var car1 = new Car("123", default);
+            car1.Pilot = new Pilot { Name = "Иванов" };
+            //car1 = default;
+            //car1 = null;
+            var car2 = (Car)car1.Clone();
+
+            var is_equals_name = ReferenceEquals(car1.Name, car2.Name);
+            var is_equals_pilot = ReferenceEquals(car1.Pilot, car2.Pilot);
+
+            //Memory<>
+            //Span<>
+
+            Vector2D[] vectors =
+            {
+                new(5,7),
+                new(3,1),
+                new(10,13),
+                new(4,5)
             };
 
-            //car.Speed = new(5, 7);
+            ref var max_vector = ref GetMaxValue(vectors);
 
-            const double dt = 0.01;
-            for (var t = 0.0; t < 10; t += dt)
+            max_vector = new(0, 0);
+
+            GetMaxValue(vectors) = new(-1, -1);
+
+            var (get_max, set_max) = GetMaxValue2(vectors);
+            var max = get_max();
+            set_max(new(5, 5));
+
+            var str = "Hello World!";
+
+            var str_span = str.AsSpan();
+
+            str = "123";
+
+            var fragment1 = str_span.Slice(4);
+            var fragment2 = str_span.Slice(1, 4);
+            var fragment3 = str_span[1..5];
+
+            var fragment4 = str[1..5];
+
+            var str2 = new string(fragment2);
+
+            //var vectors_span = Span < Vector2D >.Empty
+
+            ValueTuple<string, int> v = ("123", 123);
+
+            Tuple<string, int> ref_v = new ("123", 123);
+
+            Console.WriteLine("Готово");
+            Console.ReadLine();
+        }
+
+        private static void Print(in Vector2D vector)
+        {
+            Console.WriteLine($"{vector.X}:{vector.Y}");
+        }
+
+        public static void Print2(ref Vector2D vector)
+        {
+            vector = new();
+            Console.WriteLine($"{vector.X}:{vector.Y}");
+        }
+
+        public static void CreateVector(out Vector2D vector)
+        {
+            vector = new(5, 7);
+        }
+
+        public static ref Vector2D GetMaxValue(Vector2D[] vectors)
+        {
+            var max = double.NegativeInfinity;
+            var max_index = 0;
+
+            for (var i = 0; i < vectors.Length; i++)
             {
-                car.Acceleration = new(1 / (1 + Math.Exp(-(t - 5) / 1)), 0);
-                car.Move(dt);
+                var length = vectors[i].Length;
+                if (length > max)
+                {
+                    max = length;
+                    max_index = i;
+                }
             }
+
+            return ref vectors[max_index];
+        }
+
+        public static (Func<Vector2D> Getter, Action<Vector2D> Setter) GetMaxValue2(Vector2D[] vectors)
+        {
+            var max = double.NegativeInfinity;
+            var max_index = 0;
+
+            for (var i = 0; i < vectors.Length; i++)
+            {
+                var length = vectors[i].Length;
+                if (length > max)
+                {
+                    max = length;
+                    max_index = i;
+                }
+            }
+
+            return (() => vectors[max_index], v => vectors[max_index] = v);
         }
     }
 
-    public class Car
+    public record class Student(string LastName, string Name, string Patronymic);
+
+    public record struct Student2(string LastName, string Name, string Patronymic);
+
+    public class Pilot : ICloneable
+    {
+        public string Name { get; set; }
+
+        public object Clone() => MemberwiseClone();
+    }
+
+    public class Car : IEquatable<Car>, ICloneable
     {
         private Vector2D _Location;
         private Vector2D _Speed;
@@ -51,10 +194,20 @@ namespace IntroductionOOP
 
         public string Name { get; }
 
+        public Pilot Pilot { get; set; }
+
         public Car(string Name, Vector2D Location = default)
         {
             this.Name = Name;
             _Location = Location;
+        }
+
+        public Car(Car other)
+        {
+            _Speed = other._Speed;
+            _Acceleration = other._Acceleration;
+            _Location = other._Location;
+            Name = other.Name;
         }
 
         /// <summary>Метод перемещения машины в пространстве</summary>
@@ -70,11 +223,45 @@ namespace IntroductionOOP
 
             return location;
         }
+
+        public bool Equals(Car other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return _Location.Equals(other._Location)
+                && _Speed.Equals(other._Speed)
+                && _Acceleration.Equals(other._Acceleration)
+                && Name == other.Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            //if (obj.GetType() != this.GetType()) return false;
+            //return Equals((Car)obj);
+            return obj is Car car && Equals(car);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_Location, _Speed, _Acceleration, Name);
+        }
+
+        public static bool operator ==(Car left, Car right) => Equals(left, right);
+        public static bool operator !=(Car left, Car right) => !Equals(left, right);
+
+        public object Clone()
+        {
+            var result = (Car)MemberwiseClone();
+            result.Pilot = (Pilot)Pilot.Clone();
+            return result;
+        }
     }
 
     /// <summary>Двумерный вектор</summary>
     /// <remarks>16 байт</remarks>
-    public readonly /*ref*/ struct Vector2D
+    public readonly /*ref*/ struct Vector2D : IEquatable<Vector2D> //IStructuralEquatable
     {
         /// <summary>Значение координаты X</summary>
         /// <remarks>8 байт</remarks>
@@ -168,6 +355,41 @@ namespace IntroductionOOP
         }
 
         public override string ToString() => $"({_X};{_Y})";
+
+        public override bool Equals(object obj)
+        {
+            //var other = (Vector2D)obj;
+            //return _X == other._X && _Y == other._Y;
+            return obj is Vector2D other && Equals(other);
+        }
+
+        public bool Equals(Vector2D other)
+        {
+            return _X == other._X && _Y == other._Y;
+        }
+
+        public static bool operator ==(Vector2D v1, Vector2D v2)
+        {
+            return v1.Equals(v2);
+        }
+
+        public static bool operator !=(Vector2D v1, Vector2D v2)
+        {
+            return !(v1 == v2);
+        }
+
+        public override int GetHashCode()
+        {
+            //int hash;
+            //unchecked
+            //{
+            //    hash = _X.GetHashCode();
+            //    hash = (hash * 139) ^ _Y.GetHashCode();
+            //}
+
+            //return hash;
+            return HashCode.Combine(_X, _Y);
+        }
     }
 
 }
