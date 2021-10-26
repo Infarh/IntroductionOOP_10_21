@@ -8,29 +8,22 @@ namespace IntroductionOOP
     {
         static void Main(string[] args)
         {
-            Vector2D r1 = new();
-            //r1.X = 5;
-            //var r2 = r1;
-            Console.WriteLine(r1.X);
-
-            //var car = new Car();
-            //car.Location = car.Location.Add(new(5, 0));
-            //location.X += 10;
-
-            var car = new Car("Lada")
+            var car_name = "123";
+            var location = new Vector2D();
+            Console.WriteLine("Готов к старту");
+            Console.ReadLine();
+            
+            for (var i = 0; i < 1000_000_000; i++)
             {
-                Speed = new(5,7),
-                Acceleration = new(0.5, 0.7)
-            };
+                //var vector = new Vector2D();
+                var car = new Car(car_name, location);
 
-            //car.Speed = new(5, 7);
-
-            const double dt = 0.01;
-            for (var t = 0.0; t < 10; t += dt)
-            {
-                car.Acceleration = new(1 / (1 + Math.Exp(-(t - 5) / 1)), 0);
-                car.Move(dt);
             }
+
+            GC.Collect();
+
+            Console.WriteLine("Готово");
+            Console.ReadLine();
         }
     }
 
