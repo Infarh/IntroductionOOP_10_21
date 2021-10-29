@@ -6,12 +6,12 @@
     <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-    <NoWarn>1701;1702;0219</NoWarn>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors>8618;8765</WarningsAsErrors>
-    <OutputPath></OutputPath>
-  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+
+  <!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;IncludeInternal</DefineConstants>
+  </PropertyGroup>-->
 
 </Project>
