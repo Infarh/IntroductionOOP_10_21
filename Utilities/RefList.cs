@@ -198,8 +198,11 @@ namespace Utilities
             return node.Value;
         }
 
+        [Conditional("IncludeInternal")]
         public virtual void Clear()
         {
+            Console.WriteLine("Clear list");
+
             if (_Count == 0) return;
             var node = First;
             while (node != null)
@@ -210,6 +213,10 @@ namespace Utilities
                 node = node.Next;
                 tmp.Next = null;
             }
+
+            First = null;
+            Last = null;
+            _Count = 0;
         }
 
         public IEnumerator<T> GetEnumerator()

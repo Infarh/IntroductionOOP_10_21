@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
 
+  <!--<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;IncludeInternal</DefineConstants>
+  </PropertyGroup>-->
+
 </Project>

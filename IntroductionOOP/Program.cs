@@ -1,7 +1,10 @@
-﻿using System;
+﻿//#define IncludeInternal
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Utilities.Extensions;
 
 namespace IntroductionOOP
 {
@@ -31,6 +34,10 @@ namespace IntroductionOOP
 
             var before_node = list.AddBefore(target, -1);
             var list_str3 = string.Join(", ", list);
+
+            list.Clear();
+
+            Console.WriteLine(list.ToSeparateString("|"));
 
             //var int_ref_list = new IntList();
 
