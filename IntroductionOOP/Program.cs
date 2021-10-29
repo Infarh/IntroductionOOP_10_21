@@ -13,7 +13,8 @@ namespace IntroductionOOP
             node.Value = 7;
 
 
-            RefList<int> list = new(Enumerable.Range(1, 10));
+            //RefList<int> list = new(Enumerable.Range(1, 10));
+            var list = RefList<int>.CreateIntRange(1, 10);
 
             var list_str = string.Join(", ", list);
 
@@ -24,6 +25,27 @@ namespace IntroductionOOP
 
             var before_node = list.AddBefore(target, -1);
             var list_str3 = string.Join(", ", list);
+
+            //var int_ref_list = new IntList();
+
+           
         }
     }
+
+    //class IntList : RefList<int>
+    //{
+    //    private readonly List<int> _AddedLastValues = new();
+
+    //    public sealed override Node AddLast(int value)
+    //    {
+    //        var node = base.AddLast(value);
+    //        _AddedLastValues.Add(value);
+    //        return node;
+    //    }
+    //}
+
+    //internal class IntList2 : IntList
+    //{
+    //    public new Node AddLast(int value) { return base.AddLast(value); }
+    //}
 }

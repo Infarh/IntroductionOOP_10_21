@@ -2,13 +2,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 
 namespace Utilities
 {
     [DebuggerDisplay("RefList[items:{Count}]")]
-    public class RefList<T> : IEnumerable<T>
+    public /*sealed*/ class RefList<T> : IEnumerable<T>
     {
+        //static RefList()
+        //{
+        //    __Default = new();
+        //}
+
+        private static /*readonly*/ volatile RefList<T> __Default;
+        private static readonly object __DefaultLock = new();
+
+        public RefList<T> Default
+        {
+            get
+            {
+                if (__Default != null) return __Default;
+                lock (__DefaultLock)
+                {
+                    if (__Default != null) return __Default;
+                    __Default = new();
+                    return __Default;
+                }
+            }
+        }
+
+        public static RefList<T> Create() => new();
+
+        public static RefList<T> Create(IEnumerable<T> items) => new(items);
+
+        public static RefList<T> Create(T item, int RepeatCount) => new(Enumerable.Repeat(item, RepeatCount));
+
+        public static RefList<int> CreateIntRange(int Start, int Count) => new(Enumerable.Range(Start, Count));
+
         [DebuggerDisplay("Node = {Value}")]
         public class Node
         {
@@ -20,7 +51,7 @@ namespace Utilities
 
             public Node Prev { get; internal set; }
 
-            internal Node(RefList<T> List,T Value)
+            internal Node(RefList<T> List, T Value)
             {
                 _List = List;
                 this.Value = Value;
@@ -37,15 +68,15 @@ namespace Utilities
 
         public int Count => _Count;
 
-        public RefList() { }
+        private RefList() { }
 
-        public RefList(IEnumerable<T> items)
+        private RefList(IEnumerable<T> items)
         {
             foreach (var item in items)
                 AddLast(item);
         }
 
-        public Node AddFirst(T value)
+        public virtual Node AddFirst(T value)
         {
             var node = new Node(this, value);
 
@@ -65,7 +96,7 @@ namespace Utilities
             return node;
         }
 
-        public Node AddLast(T value)
+        public virtual Node AddLast(T value)
         {
             var node = new Node(this, value);
 
@@ -85,7 +116,7 @@ namespace Utilities
             return node;
         }
 
-        public Node AddAfter(Node Position, T value)
+        public virtual Node AddAfter(Node Position, T value)
         {
             if (!ReferenceEquals(Position._List, this))
                 throw new InvalidOperationException("Произведена попытка добавления элемента в список после узла, принадлежащего другому списку");
@@ -105,7 +136,7 @@ namespace Utilities
             return node;
         }
 
-        public Node AddBefore(Node Position, T value)
+        public virtual Node AddBefore(Node Position, T value)
         {
             if (!ReferenceEquals(Position._List, this))
                 throw new InvalidOperationException("Произведена попытка добавления элемента в список до узла, принадлежащего другому списку");
@@ -125,7 +156,7 @@ namespace Utilities
             return node;
         }
 
-        public T Remove(Node node)
+        public virtual T Remove(Node node)
         {
             if (!ReferenceEquals(node._List, this))
                 throw new InvalidOperationException("Произведена попытка удаления узла, принадлежащего другому списку");
@@ -160,7 +191,7 @@ namespace Utilities
             return node.Value;
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             if (_Count == 0) return;
             var node = First;
@@ -176,7 +207,7 @@ namespace Utilities
 
         public IEnumerator<T> GetEnumerator()
         {
-            if(_Count == 0) yield break;
+            if (_Count == 0) yield break;
             var node = First;
             while (node != null)
             {
