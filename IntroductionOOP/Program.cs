@@ -15,10 +15,15 @@ namespace IntroductionOOP
 
             RefList<int> list = new(Enumerable.Range(1, 10));
 
+            var list_str = string.Join(", ", list);
+
             var target = list.First.Next.Next;
 
             var after_node = list.AddAfter(target, 0);
+            var list_str2 = string.Join(", ", list);
+
             var before_node = list.AddBefore(target, -1);
+            var list_str3 = string.Join(", ", list);
         }
     }
 }

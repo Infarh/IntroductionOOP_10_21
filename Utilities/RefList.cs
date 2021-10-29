@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Text;
 namespace Utilities
 {
     [DebuggerDisplay("RefList[items:{Count}]")]
-    public class RefList<T>
+    public class RefList<T> : IEnumerable<T>
     {
         [DebuggerDisplay("Node = {Value}")]
         public class Node
@@ -172,5 +173,18 @@ namespace Utilities
                 tmp.Next = null;
             }
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            if(_Count == 0) yield break;
+            var node = First;
+            while (node != null)
+            {
+                yield return node.Value;
+                node = node.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 }
