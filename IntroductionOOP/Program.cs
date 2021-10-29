@@ -41,7 +41,7 @@ namespace IntroductionOOP
 
             //var int_ref_list = new IntList();
 
-           
+           list.PrintToConsole();
         }
     }
 
