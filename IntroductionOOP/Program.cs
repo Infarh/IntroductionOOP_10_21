@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
@@ -13,8 +14,13 @@ namespace IntroductionOOP
             node.Value = 7;
 
 
+            RefList<int>.ListCreated += (s, e) => Console.WriteLine(string.Join(",", e.Arg));
+            //RefList<string>.ListCreated += (s, e) => Console.WriteLine(string.Join(",", e.Arg));
+
             //RefList<int> list = new(Enumerable.Range(1, 10));
             var list = RefList<int>.CreateIntRange(1, 10);
+
+
 
             var list_str = string.Join(", ", list);
 

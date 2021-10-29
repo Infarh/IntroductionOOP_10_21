@@ -32,6 +32,8 @@ namespace Utilities
             }
         }
 
+        public static event EventHandler<EventArgs<RefList<T>>> ListCreated;
+
         public static RefList<T> Create() => new();
 
         public static RefList<T> Create(IEnumerable<T> items) => new(items);
@@ -68,12 +70,17 @@ namespace Utilities
 
         public int Count => _Count;
 
-        private RefList() { }
+        private RefList()
+        {
+            ListCreated?.Invoke(null, this);
+        }
 
         private RefList(IEnumerable<T> items)
         {
             foreach (var item in items)
                 AddLast(item);
+
+            ListCreated?.Invoke(null, this);
         }
 
         public virtual Node AddFirst(T value)
