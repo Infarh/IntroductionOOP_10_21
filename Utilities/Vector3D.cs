@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities
 {
-    public readonly partial struct Vector3D
+    public readonly partial struct Vector3D : IEquatable<Vector3D>
     {
         private readonly double _X;
         private readonly double _Y;
@@ -47,9 +43,34 @@ namespace Utilities
             _Z = Z;
         }
 
-       
-
         public void Deconstruct(out double X, out double Y, out double Z) => (X, Y, Z) = (_X, _Y, _Z);
 
+        public override bool Equals(object obj)
+        {
+            if (obj is null) return false;
+            if (obj.GetType() != GetType()) return false;
+            var other = (Vector3D)obj;
+            return _X == other._X
+                && _Y == other._Y
+                && _Z == other._Z;
+        }
+
+        public bool Equals(Vector3D other)
+        {
+            return _X.Equals(other._X)
+                && _Y.Equals(other._Y) 
+                && _Z.Equals(other._Z);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hash_code = _X.GetHashCode();
+                hash_code = (hash_code * 397) ^ _Y.GetHashCode();
+                hash_code = (hash_code * 397) ^ _Z.GetHashCode();
+                return hash_code;
+            }
+        }
     }
 }
