@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfInterface"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Title}" 
+        Height="450" Width="800">
+    <Window.DataContext>
+        <local:TestMainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
-
+        <TextBox Margin="77,62,0,0" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"
+                 TextWrapping="Wrap" RenderTransformOrigin="0.5,0.5"
+                 VerticalAlignment="Top" HorizontalAlignment="Left" Width="232">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="12.071"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+        <TextBlock Margin="45,120,0,0" 
+                   Text="{Binding CurrentTime, StringFormat=HH:mm:ss.ffff, ConverterCulture=ru-RU}" 
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"/>
+        <TextBox Margin="224,128,0,0" 
+                 Text="{Binding Title}" 
+                 TextWrapping="Wrap"
+                 VerticalAlignment="Top" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

@@ -1,13 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Utilities.Entities;
 
 namespace IntroductionOOP
 {
     class Program
     {
+        public static void Log(
+            string Info,
+            [CallerMemberName] string MethodName = null,
+            [CallerFilePath] string SourcePath = null,
+            [CallerLineNumber] int LineNumber = 0)
+        {
+            Console.WriteLine("{0}:{1}:{2}: {3}", 
+                MethodName ?? "", SourcePath, LineNumber,
+                Info);
+        }
+
         static void Main(string[] args)
         {
+            Log("Запуск программы");
+
             var students = new List<Student>
             {
                 new Student
