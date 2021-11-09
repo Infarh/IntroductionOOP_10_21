@@ -5,10 +5,12 @@ using Utilities.Entities.Base.Interfaces;
 
 namespace Utilities.Entities
 {
-    public class StudentGroup : INamedEntity, IEnumerable<Student>
+    public class StudentGroup : INamedEntity, IEnumerable<Student>, IEntity
     {
         private readonly HashSet<Student> _Students = new();
         private readonly HashSet<Cource> _Cources = new();
+
+        public int Id { get; set; }
 
         public string Name { get; }
 
