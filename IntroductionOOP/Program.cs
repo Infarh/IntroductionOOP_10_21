@@ -38,7 +38,7 @@ namespace IntroductionOOP
             //group.Add(new Student
             //{
             //    LastName = "Иванов",
-            //    Name = "Иван",
+            //    Name = "Иван",9=
             //    Patronymic = "Иванович",
             //    Birthday = DateTime.Now.AddYears(-23)
             //});
